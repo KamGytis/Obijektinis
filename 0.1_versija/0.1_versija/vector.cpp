@@ -149,7 +149,9 @@ void vectorFunkcija() {
 			skaitymas_is_failo(failo_pavadinimas);
 
 			int skaiciavimo_budas = skaiciavimo_metodas();
-            int rusiavimas = 
+			int rusiavimas_studentu = pasirinkimo_metodas();
+
+			skaiciavimo_metodas = skaiciavimo_metodas(studentai, rusiavimas);
 
         }
 
