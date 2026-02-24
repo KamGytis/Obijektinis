@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="0.1_versija.cpp">
+    <ClCompile Include="0.2_versija.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="array.cpp">

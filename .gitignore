@@ -4,3 +4,7 @@ Release/
 x64/
 *.exe
 *.user
+*.txt
+studentai*.txt
+kursiokai*.txt
+studentai1000000.txt

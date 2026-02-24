@@ -20,7 +20,8 @@ void vectorFunkcija() {
         std::cout << "1 - ranka ivedimas\n";
         std::cout << "2 - generuoti tik pazymius\n";
         std::cout << "3 - generuoti studentu vardus, pavardes ir pazymius\n";
-        std::cout << "4 - baigti darba\n";
+        std::cout << "4 - skaityti is failo\n";
+        std::cout << "5 - baigti darba\n";
         std::cin >> pasirinkimas;
 
         if (std::cin.fail()) {
@@ -139,10 +140,23 @@ void vectorFunkcija() {
         }
 
         if (pasirinkimas == 4) {
+			std::vector<StudentasV> studentai;
+
+			std::string failo_pavadinimas;
+			std::cout << "Iveskite failo pavadinima: ";
+			std::cin >> failo_pavadinimas;
+
+			skaitymas_is_failo(failo_pavadinimas);
+
+			int skaiciavimo_budas = skaiciavimo_metodas();
+            int rusiavimas = 
+
+        }
+
+        if (pasirinkimas == 5) {
             std::cout << "Programa baigta.\n";
             break;
         }
-
         std::cerr << "Tokio pasirinkimo nera, bandykite dar karta.\n";
     }
 }
