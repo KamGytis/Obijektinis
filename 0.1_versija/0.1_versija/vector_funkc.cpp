@@ -12,6 +12,7 @@
 #include <sstream>
 
 
+
 void ivesti_pazymius(StudentasV& s, int paz)
 {
     s.paz.push_back(paz);  
@@ -69,6 +70,7 @@ void isvedimas(const std::vector<StudentasV>& studentai, int metodas)
 }
 
 void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& studentai) {
+    auto start = std::chrono::high_resolution_clock::now();
     std::ifstream file(filename);
 
     if (!file.is_open()) {
@@ -108,6 +110,9 @@ void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& st
             std::cout << "Nuskaityta: " << line_number << " studentu...\n";
         }
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+
     std::cout << "Is viso nuskaityta: " << studentai.size() << " studentu\n";
 }
 
