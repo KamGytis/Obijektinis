@@ -157,3 +157,33 @@ int pasirinkimas_rusiavimo_budo() {
     }
     return pasirinkimas;
 }
+
+int isvedimo_budas() {
+    int pasirinkimas;
+    std::cout << "Pasirinkite isvedimo buda:\n";
+    std::cout << "1 - i ekrana\n";
+    std::cout << "2 - i faila\n";
+    std::cin >> pasirinkimas;
+    if (std::cin.fail() || pasirinkimas < 1 || pasirinkimas > 2) {
+        std::cerr << "Neteisingas pasirinkimas. Naudojamas isvedimas i ekrana.\n";
+        return 1; 
+    }
+    return pasirinkimas;
+}
+
+void spausdinimas_i_faila(const std::vector<StudentasV>& studentai, const std::string& filename) {
+    std::ofstream out(filename);
+    if (!out.is_open()) {
+        std::cerr << "Nepavyko atidaryti failo rezultatai.txt\n";
+        return;
+    }
+    out << std::left << std::setw(15) << "Vardas"
+        << std::left << std::setw(15) << "Pavarde"
+        << std::right << std::setw(20) << "Galutinis (rezultatas)" << "\n";
+    for (const auto& studentas : studentai) {
+        out << std::left << std::setw(15) << studentas.vardas
+            << std::left << std::setw(15) << studentas.pavarde
+            << std::right << std::setw(20) << std::fixed
+            << std::setprecision(2) << studentas.rez << "\n";
+    }
+}

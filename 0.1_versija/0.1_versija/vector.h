@@ -22,5 +22,7 @@ void isvedimas(const std::vector<StudentasV>& studentai, int metodas);
 void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& studentai);
 void rusiavimas(std::vector<StudentasV>& studentai, int rusiavimo_budas);
 int pasirinkimas_rusiavimo_budo();
+int isvedimo_budas();
+void spausdinimas_i_faila(const std::vector<StudentasV>& studentai, const std::string& filename);
 
 #endif

@@ -161,16 +161,31 @@ void vectorFunkcija() {
 
             int skaiciavimo_budas = skaiciavimo_metodas();
             int rusiavimas_studentu = pasirinkimas_rusiavimo_budo();
+			int spausdinimo_budas = isvedimo_budas();
 
             pasirinkimo_metodas(skaiciavimo_budas, studentai);
             rusiavimas(studentai, rusiavimas_studentu);
 
-            auto start_output = std::chrono::high_resolution_clock::now();
-            isvedimas(studentai, skaiciavimo_budas);
-            auto end_output = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> output_time = end_output - start_output;
-			cout << "Isvedimo laikas: " << output_time.count() << " sekundziu\n";
+            if(spausdinimo_budas == 2) {
+                auto start_output = std::chrono::high_resolution_clock::now();
+                std::string spausdinimo_failas;
+                std::cout << "Iveskite spausdinimo failo pavadinima: ";
+                std::cin >> spausdinimo_failas;
+                spausdinimas_i_faila(studentai, spausdinimo_failas);
+                auto end_output = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> output_time = end_output - start_output;
+                
+			}
+            else {
+                auto start_output = std::chrono::high_resolution_clock::now();
+                isvedimas(studentai, skaiciavimo_budas);
+                auto end_output = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> output_time = end_output - start_output;
+                cout << "Isvedimo laikas: " << output_time.count() << " sekundziu\n";
 
+            }
+
+            
             break;  
         }
 
