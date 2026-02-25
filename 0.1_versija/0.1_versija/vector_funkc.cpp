@@ -8,6 +8,8 @@
 #include <iomanip>
 #include <limits>
 #include <numeric>
+#include <fstream>
+#include <sstream>
 
 
 void ivesti_pazymius(StudentasV& s, int paz)
@@ -66,13 +68,15 @@ void isvedimas(const std::vector<StudentasV>& studentai, int metodas)
     }
 }
 
-void skaitymas_is_failo(const std::string& filename) {
+void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& studentai) {
     std::ifstream file(filename);
 
     if (!file.is_open()) {
         std::cerr << "Nepavyko atidaryti failo: " << filename << "\n";
         return;
     }
+	studentai.clear();
+
     std::string header;
     std::getline(file, header);
 

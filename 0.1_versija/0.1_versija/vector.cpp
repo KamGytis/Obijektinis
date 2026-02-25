@@ -140,19 +140,29 @@ void vectorFunkcija() {
         }
 
         if (pasirinkimas == 4) {
-			std::vector<StudentasV> studentai;
+            std::vector<StudentasV> studentai;
+            std::string failo_pavadinimas;
 
-			std::string failo_pavadinimas;
-			std::cout << "Iveskite failo pavadinima: ";
-			std::cin >> failo_pavadinimas;
+            std::cout << "Iveskite failo pavadinima: ";
+            std::cin >> failo_pavadinimas;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-			skaitymas_is_failo(failo_pavadinimas);
+            
+            skaitymas_is_failo(failo_pavadinimas, studentai);
 
-			int skaiciavimo_budas = skaiciavimo_metodas();
-			int rusiavimas_studentu = pasirinkimo_metodas();
+            if (studentai.empty()) {
+                std::cerr << "Failas tuscias arba nepavyko nuskaityti.\n";
+                continue;
+            }
 
-			skaiciavimo_metodas = skaiciavimo_metodas(studentai, rusiavimas);
+            int skaiciavimo_budas = skaiciavimo_metodas();
+            int rusiavimas_studentu = pasirinkimas_rusiavimo_budo();
 
+            pasirinkimo_metodas(skaiciavimo_budas, studentai);
+            rusiavimas(studentai, rusiavimas_studentu);
+            isvedimas(studentai, skaiciavimo_budas);
+
+            break;  
         }
 
         if (pasirinkimas == 5) {

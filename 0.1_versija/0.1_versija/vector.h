@@ -19,5 +19,8 @@ double mediana(const std::vector<int>& paz);
 void pasirinkimo_metodas(int tipas, std::vector<StudentasV>& studentai);
 void isvedimas(const std::vector<StudentasV>& studentai, int metodas);
 
+void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& studentai);
+void rusiavimas(std::vector<StudentasV>& studentai, int rusiavimo_budas);
+int pasirinkimas_rusiavimo_budo();
 
 #endif
