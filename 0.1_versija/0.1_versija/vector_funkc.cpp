@@ -173,7 +173,7 @@ int pasirinkimas_rusiavimo_budo() {
     std::cout << "5 - pagal galutini rezultata didejanciai\n";
     std::cout << "6 - pagal galutini rezultata mazejanciai\n";
     std::cin >> pasirinkimas;
-    if (std::cin.fail() || pasirinkimas < 1 || pasirinkimas > 3) {
+    if (std::cin.fail() || pasirinkimas < 1 || pasirinkimas > 6) {
         std::cerr << "Neteisingas pasirinkimas. Nenaudojamas rusiavimas.\n";
         return 0; 
     }
