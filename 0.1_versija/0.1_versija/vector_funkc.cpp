@@ -106,7 +106,7 @@ void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& st
         }
 
         studentai.push_back(std::move(s));
-        if (line_number % 10000 == 0) {
+        if (line_number % 100000 == 0) {
             std::cout << "Nuskaityta: " << line_number << " studentu...\n";
         }
     }
@@ -126,6 +126,16 @@ bool paga_pavarde(const StudentasV& a, const StudentasV& b) {
 bool pagal_rez(const StudentasV& a, const StudentasV& b) {
     return a.rez < b.rez;
 }
+bool pagal_varda_maz(const StudentasV& a, const StudentasV& b) {
+    return a.vardas > b.vardas;
+}
+
+bool paga_pavarde_maz(const StudentasV& a, const StudentasV& b) {
+    return a.pavarde > b.pavarde;
+}
+bool pagal_rez_maz(const StudentasV& a, const StudentasV& b) {
+    return a.rez > b.rez;
+}
 
 void rusiavimas(std::vector<StudentasV>& studentai, int rusiavimo_budas) {
     switch (rusiavimo_budas) {
@@ -133,10 +143,19 @@ void rusiavimas(std::vector<StudentasV>& studentai, int rusiavimo_budas) {
         std::sort(studentai.begin(), studentai.end(), pagal_varda);
         break;
     case 2:
-        std::sort(studentai.begin(), studentai.end(), paga_pavarde);
+        std::sort(studentai.begin(), studentai.end(), pagal_varda_maz);
         break;
     case 3:
+        std::sort(studentai.begin(), studentai.end(), paga_pavarde);
+        break;
+    case 4:
+        std::sort(studentai.begin(), studentai.end(), paga_pavarde_maz);
+        break;
+    case 5:
         std::sort(studentai.begin(), studentai.end(), pagal_rez);
+        break;
+    case 6:
+        std::sort(studentai.begin(), studentai.end(), pagal_rez_maz);
         break;
     default:
         std::cerr << "Neteisingas rusiavimo budas. Nenaudojamas rusiavimas.\n";
@@ -147,9 +166,12 @@ void rusiavimas(std::vector<StudentasV>& studentai, int rusiavimo_budas) {
 int pasirinkimas_rusiavimo_budo() {
     int pasirinkimas;
     std::cout << "Pasirinkite rusiavimo buda:\n";
-    std::cout << "1 - pagal varda\n";
-    std::cout << "2 - pagal pavarde\n";
-    std::cout << "3 - pagal galutini rezultata\n";
+    std::cout << "1 - pagal varda didejanciai\n";
+    std::cout << "2 - pagal varda mazejnaciai\n";
+    std::cout << "3 - pagal pavarde didejanciai\n";
+    std::cout << "4 - pagal pavarde mazejnaciai\n";
+    std::cout << "5 - pagal galutini rezultata didejanciai\n";
+    std::cout << "6 - pagal galutini rezultata mazejanciai\n";
     std::cin >> pasirinkimas;
     if (std::cin.fail() || pasirinkimas < 1 || pasirinkimas > 3) {
         std::cerr << "Neteisingas pasirinkimas. Nenaudojamas rusiavimas.\n";
