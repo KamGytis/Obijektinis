@@ -85,7 +85,8 @@ void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& st
     std::string line;
     int line_number = 0;
 
-    while (std::getline(file, line)) {
+    try{
+     while (std::getline(file, line)) {
         line_number++;
         std::stringstream ss(line);
         StudentasV s;
@@ -110,6 +111,10 @@ void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& st
             std::cout << "Nuskaityta: " << line_number << " studentu...\n";
         }
     }
+     }
+    catch (const std::exception& e) {
+        std::cerr << "Klaida nuskaitymo metu: " << e.what() << "\n";
+	}
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
 
