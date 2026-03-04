@@ -10,7 +10,7 @@
 #include <numeric>
 #include <fstream>
 #include <sstream>
-
+#include <stdexcept>
 
 
 void ivesti_pazymius(StudentasV& s, int paz)
@@ -199,6 +199,9 @@ void spausdinimas_i_faila(const std::vector<StudentasV>& studentai, const std::s
         std::cerr << "Nepavyko atidaryti failo rezultatai.txt\n";
         return;
     }
+    try {
+
+    
     out << std::left << std::setw(15) << "Vardas"
         << std::left << std::setw(15) << "Pavarde"
         << std::right << std::setw(20) << "Galutinis (rezultatas)" << "\n";
@@ -208,4 +211,9 @@ void spausdinimas_i_faila(const std::vector<StudentasV>& studentai, const std::s
             << std::right << std::setw(20) << std::fixed
             << std::setprecision(2) << studentas.rez << "\n";
     }
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Klaida spausdinant i faila: " << e.what() << "\n";
+    }
+
 }
