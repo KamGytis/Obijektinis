@@ -148,45 +148,53 @@ void vectorFunkcija() {
             std::cin >> failo_pavadinimas;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            auto start_read = std::chrono::high_resolution_clock::now();
-            skaitymas_is_failo(failo_pavadinimas, studentai);
-            auto end_read = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> read_time = end_read - start_read;
-			cout << "Nuskaitymo laikas: " << read_time.count() << " sekundziu\n";
+            try {
+                auto start_read = std::chrono::high_resolution_clock::now();
+                skaitymas_is_failo(failo_pavadinimas, studentai);
+                auto end_read = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> read_time = end_read - start_read;
 
-            if (studentai.empty()) {
-                std::cerr << "Failas tuscias arba nepavyko nuskaityti.\n";
+                if (studentai.empty()) {
+                    throw std::runtime_error("Failas tuscias arba nepavyko nuskaityti");
+                }
+
+                cout << "Nuskaitymo laikas: " << read_time.count() << " sekundziu\n";
+
+                int skaiciavimo_budas = skaiciavimo_metodas();
+                int rusiavimas_studentu = pasirinkimas_rusiavimo_budo();
+                int spausdinimo_budas = isvedimo_budas();
+
+                pasirinkimo_metodas(skaiciavimo_budas, studentai);
+                rusiavimas(studentai, rusiavimas_studentu);
+
+                if (spausdinimo_budas == 2) {
+                    auto start_output = std::chrono::high_resolution_clock::now();
+                    std::string spausdinimo_failas;
+                    std::cout << "Iveskite spausdinimo failo pavadinima: ";
+                    std::cin >> spausdinimo_failas;
+                    spausdinimas_i_faila(studentai, spausdinimo_failas);
+                    auto end_output = std::chrono::high_resolution_clock::now();
+                    std::chrono::duration<double> output_time = end_output - start_output;
+                    cout << "Spausdinimo laikas: " << output_time.count() << " sekundziu\n";
+                }
+                else {
+                    auto start_output = std::chrono::high_resolution_clock::now();
+                    isvedimas(studentai, skaiciavimo_budas);
+                    auto end_output = std::chrono::high_resolution_clock::now();
+                    std::chrono::duration<double> output_time = end_output - start_output;
+                    cout << "Isvedimo laikas: " << output_time.count() << " sekundziu\n";
+                }
+            }
+            catch (const std::runtime_error& e) {
+                std::cerr << "Klaida: " << e.what() << "\n";
+                continue;
+            }
+            catch (const std::exception& e) {
+                std::cerr << "Netiketa klaida: " << e.what() << "\n";
                 continue;
             }
 
-            int skaiciavimo_budas = skaiciavimo_metodas();
-            int rusiavimas_studentu = pasirinkimas_rusiavimo_budo();
-			int spausdinimo_budas = isvedimo_budas();
-
-            pasirinkimo_metodas(skaiciavimo_budas, studentai);
-            rusiavimas(studentai, rusiavimas_studentu);
-
-            if(spausdinimo_budas == 2) {
-                auto start_output = std::chrono::high_resolution_clock::now();
-                std::string spausdinimo_failas;
-                std::cout << "Iveskite spausdinimo failo pavadinima: ";
-                std::cin >> spausdinimo_failas;
-                spausdinimas_i_faila(studentai, spausdinimo_failas);
-                auto end_output = std::chrono::high_resolution_clock::now();
-                std::chrono::duration<double> output_time = end_output - start_output;
-                
-			}
-            else {
-                auto start_output = std::chrono::high_resolution_clock::now();
-                isvedimas(studentai, skaiciavimo_budas);
-                auto end_output = std::chrono::high_resolution_clock::now();
-                std::chrono::duration<double> output_time = end_output - start_output;
-                cout << "Isvedimo laikas: " << output_time.count() << " sekundziu\n";
-
-            }
-
-            
-            break;  
+            break;
         }
 
         if (pasirinkimas == 5) {
