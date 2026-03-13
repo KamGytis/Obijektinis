@@ -222,3 +222,18 @@ void spausdinimas_i_faila(const std::vector<StudentasV>& studentai, const std::s
     }
 
 }
+
+void skirstymas_i_grupes(
+    const std::vector<StudentasV>& visi,
+    std::vector<StudentasV>& kieti,
+    std::vector<StudentasV>& vargsai
+) {
+    for (const auto& s : visi) {
+        if (s.rez >= 5.0) {
+            kieti.push_back(s);
+        }
+        else {
+            vargsai.push_back(s);
+        }
+    }
+}
