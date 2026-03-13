@@ -17,10 +17,12 @@ struct TestResults {
 TestResults testuoti_apdorojima(const std::string& input_file) {
     TestResults res = { 0, 0, 0, 0, 0, 0, 0 };
 
+    std::cout << "\n--- Testuojamas failas: " << input_file << " ---\n";
+
     auto start_total = std::chrono::high_resolution_clock::now();
 
     try {
-
+        
         std::vector<StudentasV> studentai;
         auto start_read = std::chrono::high_resolution_clock::now();
 
@@ -30,9 +32,14 @@ TestResults testuoti_apdorojima(const std::string& input_file) {
         res.skaitymo_laikas = std::chrono::duration<double>(end_read - start_read).count();
         res.studentu_skaicius = studentai.size();
 
+        std::cout << "  [OK] Nuskaityta: " << studentai.size() << " studentu\n";
 
+        auto start_calc = std::chrono::high_resolution_clock::now();
         pasirinkimo_metodas(1, studentai);  // Vidurkis
+        auto end_calc = std::chrono::high_resolution_clock::now();
+        double calc_time = std::chrono::duration<double>(end_calc - start_calc).count();
 
+        std::cout << "  [OK] Apskaiciuoti rezultatai per: " << calc_time << " s\n";
 
         std::vector<StudentasV> kieti, vargsai;
         auto start_split = std::chrono::high_resolution_clock::now();
@@ -44,10 +51,15 @@ TestResults testuoti_apdorojima(const std::string& input_file) {
         res.kietuju_skaicius = kieti.size();
         res.vargsu_skaicius = vargsai.size();
 
+        std::cout << "  [OK] Suskirstyta: " << kieti.size() << " kietuju, "
+            << vargsai.size() << " vargsu\n";
 
+      
         auto start_output = std::chrono::high_resolution_clock::now();
 
         std::string base_name = input_file.substr(0, input_file.find_last_of('.'));
+        if (base_name.empty()) base_name = input_file;
+
         isvedimas_i_faila(kieti, base_name + "_kietiakai.txt", "Kietiakai");
         isvedimas_i_faila(vargsai, base_name + "_vargsiukai.txt", "Vargsiukai");
 
@@ -59,7 +71,7 @@ TestResults testuoti_apdorojima(const std::string& input_file) {
 
     }
     catch (const std::exception& e) {
-        std::cerr << "Klaida testuojant: " << e.what() << "\n";
+        std::cerr << "  [KLAIDA] " << e.what() << "\n";
     }
 
     return res;

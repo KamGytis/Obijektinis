@@ -12,7 +12,7 @@
 #include "utils.h"
 
 void vectorFunkcija() {
-    std::srand(std::time(nullptr));
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     while (true) {
         int pasirinkimas;
@@ -22,7 +22,8 @@ void vectorFunkcija() {
         std::cout << "2 - generuoti tik pazymius\n";
         std::cout << "3 - generuoti studentu vardus, pavardes ir pazymius\n";
         std::cout << "4 - skaityti is failo\n";
-        std::cout << "5 - baigti darba\n";
+        std::cout << "5 - failu generavimas ir testavimas\n";
+        std::cout << "6 - baigti darba\n";
         std::cin >> pasirinkimas;
 
         if (std::cin.fail()) {
@@ -33,7 +34,7 @@ void vectorFunkcija() {
         }
 
         if (pasirinkimas == 1) {
-            std::vector<StudentasV> studentai;  
+            std::vector<StudentasV> studentai;
             int chosen_option = 1;
 
             do {
@@ -51,7 +52,7 @@ void vectorFunkcija() {
 
                 studentas.egz = ivesties_tikrinimas("Egzamino pazymys: ");
 
-                studentai.push_back(studentas);  
+                studentai.push_back(studentas);
 
                 std::cout << "Ar norite ivesti dar viena studenta? (1 - taip, 0 - ne): ";
                 std::cin >> chosen_option;
@@ -196,11 +197,14 @@ void vectorFunkcija() {
 
             break;
         }
+
+
         if (pasirinkimas == 5) {
-            std::cout << "\n--- FAILU GENERATORIUS ---\n";
+            std::cout << "\n========== FAILU GENERAVIMAS IR TESTAVIMAS ==========\n";
             std::cout << "1 - Generuoti visus testu failus (1k, 10k, 100k, 1M, 10M)\n";
             std::cout << "2 - Generuoti pasirinktini faila\n";
             std::cout << "3 - Atlikti testavima (TYRIMAS 2)\n";
+            std::cout << "4 - Grizti i pagrindini meniu\n";
             std::cout << "Jusu pasirinkimas: ";
 
             int sub_choice;
@@ -221,19 +225,23 @@ void vectorFunkcija() {
             else if (sub_choice == 3) {
                 atlikti_visus_testus();
             }
+            else if (sub_choice == 4) {
+                continue;
+            }
+            else {
+                std::cerr << "Neteisingas pasirinkimas.\n";
+            }
 
-            break;
+            continue;
         }
+
 
         if (pasirinkimas == 6) {
             std::cout << "Programa baigta.\n";
             break;
         }
 
-        if (pasirinkimas == 6) {
-            std::cout << "Programa baigta.\n";
-            break;
-        }
+
         std::cerr << "Tokio pasirinkimo nera, bandykite dar karta.\n";
     }
 }
