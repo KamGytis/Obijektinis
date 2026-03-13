@@ -129,6 +129,7 @@
     <ClCompile Include="array_funkc.cpp" />
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="generator_failai.cpp" />
+    <ClCompile Include="testavimas.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="vector.cpp" />
     <ClCompile Include="vector_funkc.cpp" />
