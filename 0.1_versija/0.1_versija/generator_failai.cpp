@@ -20,3 +20,12 @@ void generuoti_faila(const std::string& filename, int studentu_skaicius, int nd_
         std::cerr << "Nepavyko sukurti failo: " << filename << "\n";
         return;
     }
+
+    out << std::left << std::setw(20) << "Vardas"
+        << std::setw(20) << "Pavarde";
+
+    for (int i = 1; i <= nd_skaicius; i++) {
+        out << std::setw(5) << ("ND" + std::to_string(i));
+    }
+    out << std::setw(5) << "Egz." << "\n";
+
