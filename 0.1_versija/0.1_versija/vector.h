@@ -25,4 +25,19 @@ int pasirinkimas_rusiavimo_budo();
 int isvedimo_budas();
 void spausdinimas_i_faila(const std::vector<StudentasV>& studentai, const std::string& filename);
 
+void skirstymas_i_grupes(
+    const std::vector<StudentasV>& visi,
+    std::vector<StudentasV>& kieti,
+    std::vector<StudentasV>& vargsai
+);
+
+void isvedimas_i_faila(
+    const std::vector<StudentasV>& studentai,
+    const std::string& filename,
+    const std::string& kategorija
+);
+
+void generuoti_faila(const std::string& filename, int studentu_skaicius, int nd_skaicius);
+void generuoti_testu_failus();
+
 #endif
