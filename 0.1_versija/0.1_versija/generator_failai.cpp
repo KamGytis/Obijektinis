@@ -29,3 +29,7 @@ void generuoti_faila(const std::string& filename, int studentu_skaicius, int nd_
     }
     out << std::setw(5) << "Egz." << "\n";
 
+    for (int i = 1; i <= studentu_skaicius; i++) {
+        out << std::left << std::setw(20) << ("Vardas" + std::to_string(i))
+            << std::setw(20) << ("Pavarde" + std::to_string(i));
+
