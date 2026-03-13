@@ -39,5 +39,6 @@ void isvedimas_i_faila(
 
 void generuoti_faila(const std::string& filename, int studentu_skaicius, int nd_skaicius);
 void generuoti_testu_failus();
+void atlikti_visus_testus();
 
 #endif
