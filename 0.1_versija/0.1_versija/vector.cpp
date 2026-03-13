@@ -196,8 +196,41 @@ void vectorFunkcija() {
 
             break;
         }
-
         if (pasirinkimas == 5) {
+            std::cout << "\n--- FAILU GENERATORIUS ---\n";
+            std::cout << "1 - Generuoti visus testu failus (1k, 10k, 100k, 1M, 10M)\n";
+            std::cout << "2 - Generuoti pasirinktini faila\n";
+            std::cout << "3 - Atlikti testavima (TYRIMAS 2)\n";
+            std::cout << "Jusu pasirinkimas: ";
+
+            int sub_choice;
+            std::cin >> sub_choice;
+
+            if (sub_choice == 1) {
+                generuoti_testu_failus();
+            }
+            else if (sub_choice == 2) {
+                int skaicius;
+                std::string pavadinimas;
+                std::cout << "Kiek studentu generuoti? ";
+                std::cin >> skaicius;
+                std::cout << "Failo pavadinimas: ";
+                std::cin >> pavadinimas;
+                generuoti_faila(pavadinimas, skaicius, 5);
+            }
+            else if (sub_choice == 3) {
+                atlikti_visus_testus();
+            }
+
+            break;
+        }
+
+        if (pasirinkimas == 6) {
+            std::cout << "Programa baigta.\n";
+            break;
+        }
+
+        if (pasirinkimas == 6) {
             std::cout << "Programa baigta.\n";
             break;
         }
