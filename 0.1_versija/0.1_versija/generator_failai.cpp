@@ -36,3 +36,17 @@ void generuoti_faila(const std::string& filename, int studentu_skaicius, int nd_
         for (int j = 0; j < nd_skaicius; j++) {
             out << std::setw(5) << generuoti_pazymi();
         }
+        out << std::setw(5) << generuoti_pazymi() << "\n";
+        if (i % 100000 == 0) {
+            std::cout << "Sugeneruota: " << i << " studentu...\n";
+        }
+    }
+    out.close();
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+
+    std::cout << "Failas '" << filename << "' sukurtas per "
+        << std::fixed << std::setprecision(6) << diff.count()
+        << " sekundziu\n";
+}
