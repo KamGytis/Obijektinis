@@ -33,3 +33,6 @@ void generuoti_faila(const std::string& filename, int studentu_skaicius, int nd_
         out << std::left << std::setw(20) << ("Vardas" + std::to_string(i))
             << std::setw(20) << ("Pavarde" + std::to_string(i));
 
+        for (int j = 0; j < nd_skaicius; j++) {
+            out << std::setw(5) << generuoti_pazymi();
+        }
