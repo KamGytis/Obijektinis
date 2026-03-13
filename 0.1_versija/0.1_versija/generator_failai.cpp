@@ -50,3 +50,14 @@ void generuoti_faila(const std::string& filename, int studentu_skaicius, int nd_
         << std::fixed << std::setprecision(6) << diff.count()
         << " sekundziu\n";
 }
+void generuoti_testu_failus() {
+    std::cout << "\n========== FAILU GENERAVIMAS ==========\n\n";
+
+    generuoti_faila("studentai1000.txt", 1000);
+    generuoti_faila("studentai10000.txt", 10000);
+    generuoti_faila("studentai100000.txt", 100000);
+    generuoti_faila("studentai1000000.txt", 1000000);
+    generuoti_faila("studentai10000000.txt", 10000000);
+
+    std::cout << "\n========================================\n";
+}
