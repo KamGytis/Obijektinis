@@ -133,3 +133,25 @@ double skirstymas_s3_d(std::deque<StudentasD>& studentai,
     return std::chrono::duration<double>(
         std::chrono::high_resolution_clock::now() - t0).count();
 }
+
+void isvedimas_i_faila_d(const std::deque<StudentasD>& studentai,
+    const std::string& filename,
+    const std::string& kategorija) {
+    std::ofstream out(filename);
+    if (!out.is_open())
+        throw std::runtime_error("Nepavyko sukurti failo: " + filename);
+
+    out << std::left << std::setw(20) << "Vardas"
+        << std::setw(20) << "Pavarde"
+        << std::right << std::setw(20) << "Galutinis" << "\n"
+        << std::string(60, '-') << "\n";
+
+    for (const auto& s : studentai)
+        out << std::left << std::setw(20) << s.vardas
+        << std::setw(20) << s.pavarde
+        << std::right << std::setw(20) << std::fixed
+        << std::setprecision(2) << s.rez << "\n";
+
+    std::cout << "  [" << kategorija << "] " << studentai.size()
+        << " studentu -> " << filename << "\n";
+}
