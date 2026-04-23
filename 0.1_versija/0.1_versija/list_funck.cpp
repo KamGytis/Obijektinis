@@ -63,4 +63,36 @@ void skaitymas_is_failo_l(const std::string& filename, std::list<StudentasL>& st
 	std::cout << "  Nuskaityta: " << nr << " studentu is failo: " << filename << "\n";
 }
 
+//list rusiavimas pagal pavarde, varda
+void rusiavimas_l(std::list<StudentasL>& studentai) {
+	studentai.sort([](const StudentasL& a, const StudentasL& b) {
+		if (a.pavarde != b.pavarde)
+			return a.pavarde < b.pavarde;
+		return a.vardas < b.vardas;
+	});
+}
+
+// ============================================================
+// STRATEGIJA 1 du nauji konteineriai, originalas lieka nepakeistas
+// // Naudoja std::copy_if
+// ============================================================
+
+double skirstymas_s1_l(const std::list<StudentasL>& visi,
+	std::list<StudentasL>& kieti,
+	std::list<StudentasL>& vargsai) {
+	auto t0 = std::chrono::high_resolution_clock::now();
+	
+	kieti.clear();
+	vargsai.clear();
+	
+	for (const auto& s : visi) {
+		if (s.rez < 5.0)
+			vargsai.push_back(s);
+		else
+			kieti.push_back(s);
+	}
+	
+	return std::chrono::duration<double>(
+		std::chrono::high_resolution_clock::now() - t0).count();
+}
 
