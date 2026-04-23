@@ -41,4 +41,4 @@ void isvedimas_i_faila_l(const std::list<StudentasL>& studentai,
 	const std::string& filename,
 	const std::string& kategorija);
 
-#endif // !list.h
+#endif 
