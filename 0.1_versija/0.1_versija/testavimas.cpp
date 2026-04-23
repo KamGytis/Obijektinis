@@ -1,99 +1,138 @@
 #include "vector.h"
+#include "list.h"
+#include "deque.h"
 #include "utils.h"
-#include <chrono>
+
 #include <iostream>
 #include <iomanip>
+#include <vector>
+#include <string>
+#include <chrono>
 
-struct TestResults {
-    double skaitymo_laikas;
-    double skirstymo_laikas;
-    double isvedimo_laikas;
-    double bendras_laikas;
-    int studentu_skaicius;
-    int kietuju_skaicius;
-    int vargsu_skaicius;
+// -------------------------------------------------------
+// Rezultatu struktura
+// -------------------------------------------------------
+struct TestRow {
+    std::string konteineris;
+    std::string failas;
+    int    studentu_sk = 0;
+    double skaitymas = 0.0;
+    double rusiavimas = 0.0;
+    double skirstymas = 0.0;
+    double bendras = 0.0;
 };
 
-TestResults testuoti_apdorojima(const std::string& input_file) {
-    TestResults res = { 0, 0, 0, 0, 0, 0, 0 };
+static void spausdinti_lentele(const std::vector<TestRow>& eilutes) {
+    std::cout << "\n" << std::string(90, '=') << "\n";
+    std::cout << std::left
+        << std::setw(8) << "Kont."
+        << std::setw(24) << "Failas"
+        << std::right
+        << std::setw(10) << "Stud."
+        << std::setw(12) << "Skait.(s)"
+        << std::setw(12) << "Rusi.(s)"
+        << std::setw(12) << "Skirsti.(s)"
+        << std::setw(12) << "Bendras(s)"
+        << "\n" << std::string(90, '-') << "\n";
 
-    std::cout << "\n--- Testuojamas failas: " << input_file << " ---\n";
-
-    auto start_total = std::chrono::high_resolution_clock::now();
-
-    try {
-        
-        std::vector<StudentasV> studentai;
-        auto start_read = std::chrono::high_resolution_clock::now();
-
-        skaitymas_is_failo(input_file, studentai);
-
-        auto end_read = std::chrono::high_resolution_clock::now();
-        res.skaitymo_laikas = std::chrono::duration<double>(end_read - start_read).count();
-        res.studentu_skaicius = studentai.size();
-
-        std::cout << "  [OK] Nuskaityta: " << studentai.size() << " studentu\n";
-
-        auto start_calc = std::chrono::high_resolution_clock::now();
-        pasirinkimo_metodas(1, studentai);  // Vidurkis
-        auto end_calc = std::chrono::high_resolution_clock::now();
-        double calc_time = std::chrono::duration<double>(end_calc - start_calc).count();
-
-        std::cout << "  [OK] Apskaiciuoti rezultatai per: " << calc_time << " s\n";
-
-        std::vector<StudentasV> kieti, vargsai;
-        auto start_split = std::chrono::high_resolution_clock::now();
-
-        skirstymas_i_grupes(studentai, kieti, vargsai);
-
-        auto end_split = std::chrono::high_resolution_clock::now();
-        res.skirstymo_laikas = std::chrono::duration<double>(end_split - start_split).count();
-        res.kietuju_skaicius = kieti.size();
-        res.vargsu_skaicius = vargsai.size();
-
-        std::cout << "  [OK] Suskirstyta: " << kieti.size() << " kietuju, "
-            << vargsai.size() << " vargsu\n";
-
-      
-        auto start_output = std::chrono::high_resolution_clock::now();
-
-        std::string base_name = input_file.substr(0, input_file.find_last_of('.'));
-        if (base_name.empty()) base_name = input_file;
-
-        isvedimas_i_faila(kieti, base_name + "_kietiakai.txt", "Kietiakai");
-        isvedimas_i_faila(vargsai, base_name + "_vargsiukai.txt", "Vargsiukai");
-
-        auto end_output = std::chrono::high_resolution_clock::now();
-        res.isvedimo_laikas = std::chrono::duration<double>(end_output - start_output).count();
-
-        auto end_total = std::chrono::high_resolution_clock::now();
-        res.bendras_laikas = std::chrono::duration<double>(end_total - start_total).count();
-
+    for (const auto& r : eilutes) {
+        std::cout << std::left
+            << std::setw(8) << r.konteineris
+            << std::setw(24) << r.failas
+            << std::right << std::fixed << std::setprecision(6)
+            << std::setw(10) << r.studentu_sk
+            << std::setw(12) << r.skaitymas
+            << std::setw(12) << r.rusiavimas
+            << std::setw(12) << r.skirstymas
+            << std::setw(12) << r.bendras
+            << "\n";
     }
-    catch (const std::exception& e) {
-        std::cerr << "  [KLAIDA] " << e.what() << "\n";
-    }
-
-    return res;
+    std::cout << std::string(90, '=') << "\n";
 }
 
-void spausdinti_rezultatus(const std::string& failas, const TestResults& res) {
-    std::cout << "\n========== REZULTATAI: " << failas << " ==========\n";
-    std::cout << std::fixed << std::setprecision(6);
-    std::cout << "Studentu: " << res.studentu_skaicius << "\n";
-    std::cout << "  - Kietiakai (>= 5.0): " << res.kietuju_skaicius << "\n";
-    std::cout << "  - Vargsiukai (< 5.0): " << res.vargsu_skaicius << "\n\n";
-    std::cout << "Skaitymo laikas:   " << res.skaitymo_laikas << " s\n";
-    std::cout << "Skirstymo laikas:  " << res.skirstymo_laikas << " s\n";
-    std::cout << "Isvedimo laikas:   " << res.isvedimo_laikas << " s\n";
-    std::cout << "----------------------------------------------\n";
-    std::cout << "BENDRAS laikas:    " << res.bendras_laikas << " s\n";
-    std::cout << "==============================================\n";
+// -------------------------------------------------------
+// Individualus testai kiekvienam konteineriui
+// -------------------------------------------------------
+static TestRow testuoti_vector(const std::string& f) {
+    TestRow r; r.konteineris = "vector"; r.failas = f;
+    auto total = std::chrono::high_resolution_clock::now();
+
+    std::vector<StudentasV> studentai;
+    auto t0 = std::chrono::high_resolution_clock::now();
+    skaitymas_is_failo(f, studentai);
+    r.skaitymas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+    r.studentu_sk = (int)studentai.size();
+
+    pasirinkimo_metodas(1, studentai);
+
+    t0 = std::chrono::high_resolution_clock::now();
+    rusiavimas(studentai, 5);
+    r.rusiavimas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+
+    std::vector<StudentasV> kieti, vargsai;
+    t0 = std::chrono::high_resolution_clock::now();
+    skirstymas_i_grupes(studentai, kieti, vargsai);
+    r.skirstymas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+
+    r.bendras = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - total).count();
+    return r;
 }
 
+static TestRow testuoti_list(const std::string& f) {
+    TestRow r; r.konteineris = "list"; r.failas = f;
+    auto total = std::chrono::high_resolution_clock::now();
 
+    std::list<StudentasL> studentai;
+    auto t0 = std::chrono::high_resolution_clock::now();
+    skaitymas_is_failo_l(f, studentai);
+    r.skaitymas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+    r.studentu_sk = (int)studentai.size();
+
+    pasirinkimo_metodas_l(1, studentai);
+
+    t0 = std::chrono::high_resolution_clock::now();
+    rusiavimas_l(studentai);
+    r.rusiavimas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+
+    std::list<StudentasL> kieti, vargsai;
+    t0 = std::chrono::high_resolution_clock::now();
+    skirstymas_i_grupes_l(studentai, kieti, vargsai);
+    r.skirstymas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+
+    r.bendras = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - total).count();
+    return r;
+}
+
+static TestRow testuoti_deque(const std::string& f) {
+    TestRow r; r.konteineris = "deque"; r.failas = f;
+    auto total = std::chrono::high_resolution_clock::now();
+
+    std::deque<StudentasD> studentai;
+    auto t0 = std::chrono::high_resolution_clock::now();
+    skaitymas_is_failo_d(f, studentai);
+    r.skaitymas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+    r.studentu_sk = (int)studentai.size();
+
+    pasirinkimo_metodas_d(1, studentai);
+
+    t0 = std::chrono::high_resolution_clock::now();
+    rusiavimas_d(studentai);
+    r.rusiavimas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+
+    std::deque<StudentasD> kieti, vargsai;
+    t0 = std::chrono::high_resolution_clock::now();
+    skirstymas_i_grupes_d(studentai, kieti, vargsai);
+    r.skirstymas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+
+    r.bendras = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - total).count();
+    return r;
+}
+
+// -------------------------------------------------------
+// Pagrindine funkcija - visi failai * visi konteineriai
+// -------------------------------------------------------
 void atlikti_visus_testus() {
-    std::vector<std::string> failai = {
+    const std::vector<std::string> failai = {
         "studentai1000.txt",
         "studentai10000.txt",
         "studentai100000.txt",
@@ -101,12 +140,23 @@ void atlikti_visus_testus() {
         "studentai10000000.txt"
     };
 
-    std::cout << "\n########## PRADEDAMAS TESTAVIMAS ##########\n";
+    std::vector<TestRow> rezultatai;
+    std::cout << "\n########## PRADEDAMAS TESTAVIMAS ##########\n\n";
 
-    for (const auto& failas : failai) {
-        auto res = testuoti_apdorojima(failas);
-        spausdinti_rezultatus(failas, res);
+    for (const auto& f : failai) {
+        std::cout << ">> vector  | " << f << "\n";
+        try { rezultatai.push_back(testuoti_vector(f)); }
+        catch (const std::exception& e) { std::cerr << "  KLAIDA: " << e.what() << "\n"; }
+
+        std::cout << ">> list    | " << f << "\n";
+        try { rezultatai.push_back(testuoti_list(f)); }
+        catch (const std::exception& e) { std::cerr << "  KLAIDA: " << e.what() << "\n"; }
+
+        std::cout << ">> deque   | " << f << "\n";
+        try { rezultatai.push_back(testuoti_deque(f)); }
+        catch (const std::exception& e) { std::cerr << "  KLAIDA: " << e.what() << "\n"; }
     }
 
     std::cout << "\n########## TESTAVIMAS BAIGTAS ##########\n";
+    spausdinti_lentele(rezultatai);
 }
