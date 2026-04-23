@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h" />
+    <ClInclude Include="list.h" />
     <ClInclude Include="struktura.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="vector.h" />
