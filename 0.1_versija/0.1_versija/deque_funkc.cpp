@@ -114,3 +114,22 @@ double skirstymas_s2_d(std::deque<StudentasD>& studentai,
     return std::chrono::duration<double>(
         std::chrono::high_resolution_clock::now() - t0).count();
 }
+
+// ============================================================
+// STRATEGIJA 3 - stable_partition (greiciausia deque atveju)
+// ============================================================
+double skirstymas_s3_d(std::deque<StudentasD>& studentai,
+    std::deque<StudentasD>& vargsai) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+
+    vargsai.clear();
+
+    auto pivot = std::stable_partition(studentai.begin(), studentai.end(),
+        [](const StudentasD& s) { return s.rez < 5.0; });
+
+    vargsai.assign(studentai.begin(), pivot);
+    studentai.erase(studentai.begin(), pivot);
+
+    return std::chrono::duration<double>(
+        std::chrono::high_resolution_clock::now() - t0).count();
+}
