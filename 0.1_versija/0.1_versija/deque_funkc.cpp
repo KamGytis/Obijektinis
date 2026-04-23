@@ -65,3 +65,31 @@ void skaitymas_is_failo_d(const std::string& filename, std::deque<StudentasD>& s
     }
     std::cout << "  Is viso nuskaityta: " << studentai.size() << " studentu\n";
 }
+
+// deque turi atsitiktine prieiga - naudojame std::sort
+void rusiavimas_d(std::deque<StudentasD>& studentai) {
+    std::sort(studentai.begin(), studentai.end(),
+        [](const StudentasD& a, const StudentasD& b) { return a.rez < b.rez; });
+}
+
+// ============================================================
+// STRATEGIJA 1 - du nauji konteineriai, originalas lieka
+// Naudoja std::copy_if
+// ============================================================
+double skirstymas_s1_d(const std::deque<StudentasD>& visi,
+    std::deque<StudentasD>& kieti,
+    std::deque<StudentasD>& vargsai) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+
+    kieti.clear();
+    vargsai.clear();
+
+    std::copy_if(visi.begin(), visi.end(), std::back_inserter(vargsai),
+        [](const StudentasD& s) { return s.rez < 5.0; });
+
+    std::copy_if(visi.begin(), visi.end(), std::back_inserter(kieti),
+        [](const StudentasD& s) { return s.rez >= 5.0; });
+
+    return std::chrono::duration<double>(
+        std::chrono::high_resolution_clock::now() - t0).count();
+}
