@@ -127,8 +127,11 @@
     <ClCompile Include="0.2_versija.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="array_funkc.cpp" />
+    <ClCompile Include="deque_funkc.cpp" />
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="generator_failai.cpp" />
+    <ClCompile Include="list_funck.cpp" />
+    <ClCompile Include="Makefile.cpp" />
     <ClCompile Include="testavimas.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="vector.cpp" />
@@ -136,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h" />
+    <ClInclude Include="deque.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="struktura.h" />
     <ClInclude Include="utils.h" />

@@ -42,6 +42,15 @@
     <ClCompile Include="testavimas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="list_funck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="deque_funkc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Makefile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h">
@@ -57,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="list.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="deque.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
