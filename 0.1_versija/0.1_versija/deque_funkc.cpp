@@ -93,3 +93,24 @@ double skirstymas_s1_d(const std::deque<StudentasD>& visi,
     return std::chrono::duration<double>(
         std::chrono::high_resolution_clock::now() - t0).count();
 }
+
+// ============================================================
+// STRATEGIJA 2 - vienas naujas konteineris + erase/remove_if
+// ============================================================
+double skirstymas_s2_d(std::deque<StudentasD>& studentai,
+    std::deque<StudentasD>& vargsai) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+
+    vargsai.clear();
+
+    std::copy_if(studentai.begin(), studentai.end(), std::back_inserter(vargsai),
+        [](const StudentasD& s) { return s.rez < 5.0; });
+
+    studentai.erase(
+        std::remove_if(studentai.begin(), studentai.end(),
+            [](const StudentasD& s) { return s.rez < 5.0; }),
+        studentai.end());
+
+    return std::chrono::duration<double>(
+        std::chrono::high_resolution_clock::now() - t0).count();
+}
