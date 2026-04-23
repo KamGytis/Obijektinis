@@ -96,3 +96,66 @@ double skirstymas_s1_l(const std::list<StudentasL>& visi,
 		std::chrono::high_resolution_clock::now() - t0).count();
 }
 
+// ============================================================
+// STRATEGIJA 2 vienas naujas konteineris (vargsai), originalas tampa kietiakai
+// Naudoja iteracija su erase
+// ============================================================
+double skirstymas_s2_l(std::list<StudentasL>& studentai,
+	std::list<StudentasL>& vargsai) {
+	auto t0 = std::chrono::high_resolution_clock::now();
+
+	vargsai.clear();
+
+	for (auto it = studentai.begin(); it != studentai.end(); ) {
+		if (it->rez < 5.0) {
+			vargsai.push_back(*it);
+			it = studentai.erase(it);  // list::erase - O(1), nekeicia kitu elementu
+		} else {
+			++it;
+		}
+	}
+
+	return std::chrono::duration<double>(
+		std::chrono::high_resolution_clock::now() - t0).count();
+}
+// ============================================================
+// STRATEGIJA 3 splice - nulines kopijos
+// Naudoja list::splice – nulines kopijos, O(n) iteracija
+// ============================================================
+
+double skirstymas_s3_l(std::list<StudentasL>& studentai,
+	std::list<StudentasL>& vargsai) {
+	auto t0 = std::chrono::high_resolution_clock::now();
+	vargsai.clear();
+	for (auto it = studentai.begin(); it != studentai.end(); ) {
+		if (it->rez < 5.0) {
+			vargsai.splice(vargsai.end(), studentai, it++);
+		} else {
+			++it;
+		}
+	}
+	return std::chrono::duration<double>(
+		std::chrono::high_resolution_clock::now() - t0).count();
+}
+
+void isvedimas_i_faila_l(const std::list<StudentasL>& studentai,
+	const std::string& filename,
+	const std::string& kategorija) {
+	std::ofstream file(filename);
+	if (!file.is_open())
+		throw std::runtime_error("Nepavyko atidaryti failo: " + filename);
+	
+	file << "Vardas Pavarde ";
+	for (size_t i = 1; i <= 10; ++i)
+		file << "Pazymys" << i << " ";
+	file << "Egzaminas Rezultatas\n";
+	
+	for (const auto& s : studentai) {
+		file << s.vardas << " " << s.pavarde << " ";
+		for (size_t i = 0; i < s.paz.size(); ++i)
+			file << s.paz[i] << " ";
+		for (size_t i = s.paz.size(); i < 10; ++i)
+			file << "0 ";
+		file << s.egz << " " << std::fixed << std::setprecision(2) << s.rez << "\n";
+	}
+}
