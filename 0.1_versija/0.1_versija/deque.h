@@ -1,15 +1,9 @@
-#ifndef DEQUE.h
+#ifndef DEQUE_H
 #define DEQUE_H
 
 #include <string>
 #include <vector>
 #include <deque>
-#include <algorithm>
-#include <numeric>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <chrono>
 
 struct StudentasD {
 	std::string vardas  = "";

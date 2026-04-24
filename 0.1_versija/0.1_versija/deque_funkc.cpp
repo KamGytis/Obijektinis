@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <chrono>
 
-void isvesti_pazymius_d(StudentasD& s, int paz) {
+void ivesti_pazymius_d(StudentasD& s, int paz) {
 	s.paz.push_back(paz);
 }
 
@@ -76,7 +76,7 @@ void rusiavimas_d(std::deque<StudentasD>& studentai) {
 // STRATEGIJA 1 - du nauji konteineriai, originalas lieka
 // Naudoja std::copy_if
 // ============================================================
-double skirstymas_s1_d(const std::deque<StudentasD>& visi,
+double skirstymas_i_grupes_d(const std::deque<StudentasD>& visi,
     std::deque<StudentasD>& kieti,
     std::deque<StudentasD>& vargsai) {
     auto t0 = std::chrono::high_resolution_clock::now();
