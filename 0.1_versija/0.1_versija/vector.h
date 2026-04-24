@@ -31,18 +31,18 @@ void skirstymas_i_grupes(
     std::vector<StudentasV>& vargsai
 );
 
-//s1 du nauji konteineriai, originalas lieka nepakeistas
+//STRATEGIJA 1 du nauji konteineriai, originalas lieka nepakeistas
 
 double skirstymas_s1(const std::vector<StudentasV>& studentai,
     std::vector<StudentasV>& kieti,
 	std::vector<StudentasV>& vargsai);
 
-//s2 vienas naujas konteineris + ersa/remove if
+//STRATEGIJA 2 vienas naujas konteineris + erase/remove if
 
 double skirstymas_s2(std::vector<StudentasV>& studentai,
 	std::vector<StudentasV>& vargsai);
 
-//s3 std::partition
+//STRATEGIJA 3 std::partition
 
 double skirstymas_s3(std::vector<StudentasV>& studentai,
 	std::vector<StudentasV>& vargsai);
