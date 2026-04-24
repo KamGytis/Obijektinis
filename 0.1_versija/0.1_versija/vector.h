@@ -31,6 +31,22 @@ void skirstymas_i_grupes(
     std::vector<StudentasV>& vargsai
 );
 
+//s1 du nauji konteineriai, originalas lieka nepakeistas
+
+double skirstymas_s1(const std::vector<StudentasV>& studentai,
+    std::vector<StudentasV>& kieti,
+	std::vector<StudentasV>& vargsai);
+
+//s2 vienas naujas konteineris + ersa/remove if
+
+double skirstymas_s2(std::vector<StudentasV>& studentai,
+	std::vector<StudentasV>& vargsai);
+
+//s3 std::partition
+
+double skirstymas_s3(std::vector<StudentasV>& studentai,
+	std::vector<StudentasV>& vargsai);
+
 void isvedimas_i_faila(
     const std::vector<StudentasV>& studentai,
     const std::string& filename,
