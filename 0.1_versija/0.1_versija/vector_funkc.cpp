@@ -104,7 +104,7 @@ void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& st
             }
 
             studentai.push_back(std::move(s));
-            if (line_number % 100000 == 0) {
+            if (line_number % 1000000 == 0) {
                 std::cout << "Nuskaityta: " << line_number << " studentu...\n";
             }
         }

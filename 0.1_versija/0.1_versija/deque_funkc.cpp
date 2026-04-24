@@ -60,7 +60,7 @@ void skaitymas_is_failo_d(const std::string& filename, std::deque<StudentasD>& s
         s.egz = s.paz.back();
         s.paz.pop_back();
         studentai.push_back(std::move(s));
-        if (nr % 100000 == 0)
+        if (nr % 1000000 == 0)
             std::cout << "  Nuskaityta: " << nr << " studentu...\n";
     }
     std::cout << "  Is viso nuskaityta: " << studentai.size() << " studentu\n";
@@ -130,6 +130,20 @@ double skirstymas_s3_d(std::deque<StudentasD>& studentai,
     vargsai.assign(studentai.begin(), pivot);
     studentai.erase(studentai.begin(), pivot);
 
+    return std::chrono::duration<double>(
+        std::chrono::high_resolution_clock::now() - t0).count();
+}
+
+double skirstymas_s1_d(
+    const std::deque<StudentasD>& studentai,
+    std::deque<StudentasD>& kieti,
+    std::deque<StudentasD>& vargsai) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+    kieti.clear(); vargsai.clear();
+    std::copy_if(studentai.begin(), studentai.end(), std::back_inserter(kieti),
+        [](const StudentasD& s) { return s.rez >= 5.0; });
+    std::copy_if(studentai.begin(), studentai.end(), std::back_inserter(vargsai),
+        [](const StudentasD& s) { return s.rez < 5.0; });
     return std::chrono::duration<double>(
         std::chrono::high_resolution_clock::now() - t0).count();
 }

@@ -57,7 +57,7 @@ void skaitymas_is_failo_l(const std::string& filename, std::list<StudentasL>& st
 		s.egz = s.paz.back();
 		s.paz.pop_back();
 		studentai.push_back(std::move(s));
-		if (nr % 100000 == 0)
+		if (nr % 1000000 == 0)
 			std::cout << "  Nuskaityta: " << nr << " studentu...\n";
 	}
 	std::cout << "  Nuskaityta: " << nr << " studentu is failo: " << filename << "\n";
@@ -73,62 +73,72 @@ void rusiavimas_l(std::list<StudentasL>& studentai) {
 }
 
 // ============================================================
-// STRATEGIJA 1 du nauji konteineriai, originalas lieka nepakeistas
-// // Naudoja std::copy_if
+// Originali strategija - du nauji konteineriai, originalas lieka
 // ============================================================
-
 double skirstymas_i_grupes_l(const std::list<StudentasL>& visi,
 	std::list<StudentasL>& kieti,
 	std::list<StudentasL>& vargsai) {
 	auto t0 = std::chrono::high_resolution_clock::now();
-	
 	kieti.clear();
 	vargsai.clear();
-	
 	for (const auto& s : visi) {
-		if (s.rez < 5.0)
-			vargsai.push_back(s);
-		else
-			kieti.push_back(s);
+		if (s.rez < 5.0) vargsai.push_back(s);
+		else              kieti.push_back(s);
 	}
-	
+	return std::chrono::duration<double>(  // [PATAISYTA] pridetas return
+		std::chrono::high_resolution_clock::now() - t0).count();
 }
 
 // ============================================================
-// STRATEGIJA 2 vienas naujas konteineris (vargsai), originalas tampa kietiakai
-// Naudoja iteracija su erase
+// S1: du nauji konteineriai su kopijomis (std::copy_if)
+// [NAUJA] funkcija
+// ============================================================
+double skirstymas_s1_l(const std::list<StudentasL>& visi,
+	std::list<StudentasL>& kieti,
+	std::list<StudentasL>& vargsai) {
+	auto t0 = std::chrono::high_resolution_clock::now();
+	kieti.clear();
+	vargsai.clear();
+	std::copy_if(visi.begin(), visi.end(), std::back_inserter(kieti),
+		[](const StudentasL& s) { return s.rez >= 5.0; });
+	std::copy_if(visi.begin(), visi.end(), std::back_inserter(vargsai),
+		[](const StudentasL& s) { return s.rez < 5.0; });
+	return std::chrono::duration<double>(
+		std::chrono::high_resolution_clock::now() - t0).count();
+}
+
+// ============================================================
+// S2: vienas naujas konteineris + erase kilpa
 // ============================================================
 double skirstymas_s2_l(std::list<StudentasL>& studentai,
 	std::list<StudentasL>& vargsai) {
 	auto t0 = std::chrono::high_resolution_clock::now();
-
 	vargsai.clear();
-
 	for (auto it = studentai.begin(); it != studentai.end(); ) {
 		if (it->rez < 5.0) {
 			vargsai.push_back(*it);
-			it = studentai.erase(it);  // list::erase - O(1), nekeicia kitu elementu
-		} else {
+			it = studentai.erase(it);
+		}
+		else {
 			++it;
 		}
 	}
-
 	return std::chrono::duration<double>(
 		std::chrono::high_resolution_clock::now() - t0).count();
 }
-// ============================================================
-// STRATEGIJA 3 splice - nulines kopijos
-// Naudoja list::splice – nulines kopijos, O(n) iteracija
-// ============================================================
 
-double skirstymas_s3_d(std::list<StudentasL>& studentai,
+// ============================================================
+// S3: splice - nulines kopijos, O(n)
+// ============================================================
+double skirstymas_s3_l(std::list<StudentasL>& studentai,
 	std::list<StudentasL>& vargsai) {
 	auto t0 = std::chrono::high_resolution_clock::now();
 	vargsai.clear();
 	for (auto it = studentai.begin(); it != studentai.end(); ) {
 		if (it->rez < 5.0) {
 			vargsai.splice(vargsai.end(), studentai, it++);
-		} else {
+		}
+		else {
 			++it;
 		}
 	}
@@ -142,12 +152,12 @@ void isvedimas_i_faila_l(const std::list<StudentasL>& studentai,
 	std::ofstream file(filename);
 	if (!file.is_open())
 		throw std::runtime_error("Nepavyko atidaryti failo: " + filename);
-	
+
 	file << "Vardas Pavarde ";
 	for (size_t i = 1; i <= 10; ++i)
 		file << "Pazymys" << i << " ";
 	file << "Egzaminas Rezultatas\n";
-	
+
 	for (const auto& s : studentai) {
 		file << s.vardas << " " << s.pavarde << " ";
 		for (size_t i = 0; i < s.paz.size(); ++i)
