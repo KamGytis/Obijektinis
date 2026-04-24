@@ -24,7 +24,7 @@
     <ClCompile Include="testavimas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="list_funck.cpp">
+    <ClCompile Include="list_funkc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="deque_funkc.cpp">

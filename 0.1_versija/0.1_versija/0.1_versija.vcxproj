@@ -126,7 +126,7 @@
   <ItemGroup>
     <ClCompile Include="deque_funkc.cpp" />
     <ClCompile Include="generator.cpp" />
-    <ClCompile Include="list_funck.cpp" />
+    <ClCompile Include="list_funkc.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="testavimas.cpp" />
     <ClCompile Include="utils.cpp" />

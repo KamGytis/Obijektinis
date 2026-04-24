@@ -77,7 +77,7 @@ void rusiavimas_l(std::list<StudentasL>& studentai) {
 // // Naudoja std::copy_if
 // ============================================================
 
-double skirstymas_s1_l(const std::list<StudentasL>& visi,
+double skirstymas_i_grupes_l(const std::list<StudentasL>& visi,
 	std::list<StudentasL>& kieti,
 	std::list<StudentasL>& vargsai) {
 	auto t0 = std::chrono::high_resolution_clock::now();
@@ -123,7 +123,7 @@ double skirstymas_s2_l(std::list<StudentasL>& studentai,
 // Naudoja list::splice – nulines kopijos, O(n) iteracija
 // ============================================================
 
-double skirstymas_s3_l(std::list<StudentasL>& studentai,
+double skirstymas_s3_d(std::list<StudentasL>& studentai,
 	std::list<StudentasL>& vargsai) {
 	auto t0 = std::chrono::high_resolution_clock::now();
 	vargsai.clear();
