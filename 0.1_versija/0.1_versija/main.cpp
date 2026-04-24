@@ -139,3 +139,49 @@ static void rankinis_ivedimas() {
         isvedimas(studentai, t);
     }
 }
+
+int main() {
+    while (true) {
+        std::cout << "\n======= STUDENTU PROGRAMA v1.0 (pradinis) =======\n"
+            << "1 - Rankinis ivedimas\n"
+            << "2 - Skaityti is failo (vector)\n"
+            << "3 - Skaityti is failo (list)\n"
+            << "4 - Skaityti is failo (deque)\n"
+            << "5 - Testavimas (visi konteineriai)\n"
+            << "6 - Generuoti studentu failus\n"
+            << "7 - Baigti\n"
+            << "Pasirinkimas: ";
+
+        int p;
+        std::cin >> p;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+
+        switch (p) {
+        case 1: rankinis_ivedimas(); break;
+        case 2: skaityti_vector();   break;
+        case 3: skaityti_list();     break;
+        case 4: skaityti_deque();    break;
+        case 5: atlikti_visus_testus(); break;
+        case 6: {
+            std::cout << "1 - Visus testu failus (1k-10M)\n2 - Viena faila\nPasirinkimas: ";
+            int sub; std::cin >> sub;
+            if (sub == 1) {
+                generuoti_testu_failus();
+            }
+            else {
+                int n; std::string fn;
+                std::cout << "Kiek studentu? "; std::cin >> n;
+                std::cout << "Failo pavadinimas: "; std::cin >> fn;
+                generuoti_faila(fn, n, 5);
+            }
+            break;
+        }
+        case 7: std::cout << "Programa baigta.\n"; return 0;
+        default: std::cerr << "Tokio pasirinkimo nera.\n";
+        }
+    }
+}
