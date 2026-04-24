@@ -130,7 +130,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="testavimas.cpp" />
     <ClCompile Include="utils.cpp" />
-    <ClCompile Include="vecotr_funkc.cpp" />
+    <ClCompile Include="vector_funkc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="deque.h" />
