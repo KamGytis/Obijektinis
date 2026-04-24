@@ -26,6 +26,19 @@ double skirstymas_i_grupes_d(const std::deque<StudentasD>& visi,
     std::deque<StudentasD>& kieti,
     std::deque<StudentasD>& vargsai);
 
+// STRATEGIJA 1 du nauji konteineriai, originalas lieka nepakeistas
+double skirstymas_s1_d(const std::deque<StudentasD>& visi,
+    std::deque<StudentasD>& kieti,
+	std::deque<StudentasD>& vargsai);
+
+// STRATEGIJA 2 vienas naujas konteineris + erase/remove if
+double skirstymas_s2_d(std::deque<StudentasD>& studentai,
+	std::deque<StudentasD>& vargsai);
+
+// STRATEGIJA 3 std::partition
+double skirstymas_s3_d(std::deque<StudentasD>& studentai,
+	std::deque<StudentasD>& vargsai);
+
 void isvedimas_i_faila_d(const std::deque<StudentasD>& studentai,
     const std::string& filename,
     const std::string& kategorija);
