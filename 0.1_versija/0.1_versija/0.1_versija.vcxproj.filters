@@ -48,9 +48,6 @@
     <ClCompile Include="deque_funkc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Makefile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h">
