@@ -111,3 +111,31 @@ static void skaityti_deque() {
     isvedimas_i_faila_d(kieti, base + "_kietiakai.txt", "Kietiakai");
     isvedimas_i_faila_d(vargsai, base + "_vargsiukai.txt", "Vargsiukai");
 }
+
+
+// Rankinis ivedimas (vector) - is originalo
+
+static void rankinis_ivedimas() {
+    std::vector<StudentasV> studentai;
+    int chosen = 1;
+    do {
+        StudentasV s;
+        s.vardas = ivesti_varda_ar_pavarde("Vardas: ");
+        s.pavarde = ivesti_varda_ar_pavarde("Pavarde: ");
+        std::cout << "Pazymiai (0-10, -1 baigti):\n";
+        while (true) {
+            int p = ivesties_tikrinimas("Pazymys: ");
+            if (p == -1) break;
+            s.paz.push_back(p);
+        }
+        s.egz = ivesties_tikrinimas("Egzamino pazymys: ");
+        studentai.push_back(s);
+        std::cout << "Dar vienas? (1-taip, 0-ne): "; std::cin >> chosen;
+    } while (chosen == 1);
+
+    if (!studentai.empty()) {
+        int t = skaiciavimo_metodas();
+        pasirinkimo_metodas(t, studentai);
+        isvedimas(studentai, t);
+    }
+}
