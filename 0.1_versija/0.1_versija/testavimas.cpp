@@ -51,7 +51,7 @@ static void spausdinti_lentele(const std::vector<TestRow>& eilutes) {
 }
 
 // -------------------------------------------------------
-// Individualus testai kiekvienam konteineriui
+// Vector testai
 // -------------------------------------------------------
 static TestRow testuoti_vector(const std::string& f) {
     TestRow r; r.konteineris = "vector"; r.failas = f;
@@ -77,6 +77,9 @@ static TestRow testuoti_vector(const std::string& f) {
     r.bendras = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - total).count();
     return r;
 }
+// -------------------------------------------------------
+// List testai
+// -------------------------------------------------------
 
 static TestRow testuoti_list(const std::string& f) {
     TestRow r; r.konteineris = "list"; r.failas = f;
@@ -102,6 +105,9 @@ static TestRow testuoti_list(const std::string& f) {
     r.bendras = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - total).count();
     return r;
 }
+// -------------------------------------------------------
+// Deque testai
+// -------------------------------------------------------
 
 static TestRow testuoti_deque(const std::string& f) {
     TestRow r; r.konteineris = "deque"; r.failas = f;
@@ -144,18 +150,21 @@ void atlikti_visus_testus() {
     std::cout << "\n########## PRADEDAMAS TESTAVIMAS ##########\n\n";
 
     for (const auto& f : failai) {
-        std::cout << ">> vector  | " << f << "\n";
-        try { rezultatai.push_back(testuoti_vector(f)); }
+        for (int s = 1; s <= 3; ++s) {
+			std::cout << ">> Vector S" << s << " | " << f << "\n";
+            try { rezultatai.push_back(testuoti_vector(f, s)); }
+			catch (const std::exception& e) { std::cerr << "  KLAIDA: " << e.what() << "\n"; }
+		}
+
+        std::cout << ">> List  S " << f << "\n";
+        try { rezultatai.push_back(testuoti_list(f, s)); }
         catch (const std::exception& e) { std::cerr << "  KLAIDA: " << e.what() << "\n"; }
 
-        std::cout << ">> list    | " << f << "\n";
-        try { rezultatai.push_back(testuoti_list(f)); }
-        catch (const std::exception& e) { std::cerr << "  KLAIDA: " << e.what() << "\n"; }
 
-        std::cout << ">> deque   | " << f << "\n";
-        try { rezultatai.push_back(testuoti_deque(f)); }
+        std::cout << ">> Deque  S " << s << " | " << f << "\n";
+        try { rezultatai.push_back(testuoti_deque(f, s)); }
         catch (const std::exception& e) { std::cerr << "  KLAIDA: " << e.what() << "\n"; }
-    }
+	}
 
     std::cout << "\n########## TESTAVIMAS BAIGTAS ##########\n";
     spausdinti_lentele(rezultatai);

@@ -92,8 +92,6 @@ double skirstymas_i_grupes_l(const std::list<StudentasL>& visi,
 			kieti.push_back(s);
 	}
 	
-	return std::chrono::duration<double>(
-		std::chrono::high_resolution_clock::now() - t0).count();
 }
 
 // ============================================================
