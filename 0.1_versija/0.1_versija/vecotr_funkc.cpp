@@ -1,5 +1,4 @@
 #include "vector.h"
-#include "struktura.h"
 #include "utils.h"
 
 #include <iostream>
@@ -11,11 +10,11 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
-
+#include <chrono>
 
 void ivesti_pazymius(StudentasV& s, int paz)
 {
-    s.paz.push_back(paz);  
+    s.paz.push_back(paz);
 }
 
 double vidurkis(const std::vector<int>& paz)
@@ -30,7 +29,7 @@ double mediana(const std::vector<int>& paz)
 {
     if (paz.empty()) return 0.00;
 
-    std::vector<int> temp = paz; 
+    std::vector<int> temp = paz;
     std::sort(temp.begin(), temp.end());
 
     size_t n = temp.size();
@@ -42,7 +41,7 @@ double mediana(const std::vector<int>& paz)
 
 void pasirinkimo_metodas(int tipas, std::vector<StudentasV>& studentai)
 {
-    for (auto& studentas : studentai) {  
+    for (auto& studentas : studentai) {
         double x;
         if (tipas == 1) {
             x = vidurkis(studentas.paz);
@@ -70,14 +69,13 @@ void isvedimas(const std::vector<StudentasV>& studentai, int metodas)
 }
 
 void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& studentai) {
-    auto start = std::chrono::high_resolution_clock::now();
     std::ifstream file(filename);
 
     if (!file.is_open()) {
         std::cerr << "Nepavyko atidaryti failo: " << filename << "\n";
         return;
     }
-	studentai.clear();
+    studentai.clear();
 
     std::string header;
     std::getline(file, header);
@@ -85,38 +83,35 @@ void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& st
     std::string line;
     int line_number = 0;
 
-    try{
-     while (std::getline(file, line)) {
-        line_number++;
-        std::stringstream ss(line);
-        StudentasV s;
-        ss >> s.vardas >> s.pavarde;
-        int value;
-        while (ss >> value) {
-            s.paz.push_back(value);
-        }
+    try {
+        while (std::getline(file, line)) {
+            line_number++;
+            std::stringstream ss(line);
+            StudentasV s;
+            ss >> s.vardas >> s.pavarde;
+            int value;
+            while (ss >> value) {
+                s.paz.push_back(value);
+            }
 
-        if (!s.paz.empty()) {
-            s.egz = s.paz.back();
-            s.paz.pop_back();
-        }
-        else {
-            std::cerr << "Klaida eiluteje " << line_number
-                << ": nera pazymiu\n";
-            continue;
-        }
+            if (!s.paz.empty()) {
+                s.egz = s.paz.back();
+                s.paz.pop_back();
+            }
+            else {
+                std::cerr << "Klaida eiluteje " << line_number << ": nera pazymiu\n";
+                continue;
+            }
 
-        studentai.push_back(std::move(s));
-        if (line_number % 100000 == 0) {
-            std::cout << "Nuskaityta: " << line_number << " studentu...\n";
+            studentai.push_back(std::move(s));
+            if (line_number % 100000 == 0) {
+                std::cout << "Nuskaityta: " << line_number << " studentu...\n";
+            }
         }
     }
-     }
     catch (const std::exception& e) {
         std::cerr << "Klaida nuskaitymo metu: " << e.what() << "\n";
-	}
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> diff = end - start;
+    }
 
     std::cout << "Is viso nuskaityta: " << studentai.size() << " studentu\n";
 }
@@ -124,7 +119,6 @@ void skaitymas_is_failo(const std::string& filename, std::vector<StudentasV>& st
 bool pagal_varda(const StudentasV& a, const StudentasV& b) {
     return a.vardas < b.vardas;
 }
-
 bool paga_pavarde(const StudentasV& a, const StudentasV& b) {
     return a.pavarde < b.pavarde;
 }
@@ -134,7 +128,6 @@ bool pagal_rez(const StudentasV& a, const StudentasV& b) {
 bool pagal_varda_maz(const StudentasV& a, const StudentasV& b) {
     return a.vardas > b.vardas;
 }
-
 bool paga_pavarde_maz(const StudentasV& a, const StudentasV& b) {
     return a.pavarde > b.pavarde;
 }
@@ -144,27 +137,13 @@ bool pagal_rez_maz(const StudentasV& a, const StudentasV& b) {
 
 void rusiavimas(std::vector<StudentasV>& studentai, int rusiavimo_budas) {
     switch (rusiavimo_budas) {
-    case 1:
-        std::sort(studentai.begin(), studentai.end(), pagal_varda);
-        break;
-    case 2:
-        std::sort(studentai.begin(), studentai.end(), pagal_varda_maz);
-        break;
-    case 3:
-        std::sort(studentai.begin(), studentai.end(), paga_pavarde);
-        break;
-    case 4:
-        std::sort(studentai.begin(), studentai.end(), paga_pavarde_maz);
-        break;
-    case 5:
-        std::sort(studentai.begin(), studentai.end(), pagal_rez);
-        break;
-    case 6:
-        std::sort(studentai.begin(), studentai.end(), pagal_rez_maz);
-        break;
-    default:
-        std::cerr << "Neteisingas rusiavimo budas. Nenaudojamas rusiavimas.\n";
-        break;
+    case 1: std::sort(studentai.begin(), studentai.end(), pagal_varda);      break;
+    case 2: std::sort(studentai.begin(), studentai.end(), pagal_varda_maz);  break;
+    case 3: std::sort(studentai.begin(), studentai.end(), paga_pavarde);     break;
+    case 4: std::sort(studentai.begin(), studentai.end(), paga_pavarde_maz); break;
+    case 5: std::sort(studentai.begin(), studentai.end(), pagal_rez);        break;
+    case 6: std::sort(studentai.begin(), studentai.end(), pagal_rez_maz);    break;
+    default: std::cerr << "Neteisingas rusiavimo budas. Nenaudojamas rusiavimas.\n"; break;
     }
 }
 
@@ -172,15 +151,15 @@ int pasirinkimas_rusiavimo_budo() {
     int pasirinkimas;
     std::cout << "Pasirinkite rusiavimo buda:\n";
     std::cout << "1 - pagal varda didejanciai\n";
-    std::cout << "2 - pagal varda mazejnaciai\n";
+    std::cout << "2 - pagal varda mazejanciai\n";
     std::cout << "3 - pagal pavarde didejanciai\n";
-    std::cout << "4 - pagal pavarde mazejnaciai\n";
+    std::cout << "4 - pagal pavarde mazejanciai\n";
     std::cout << "5 - pagal galutini rezultata didejanciai\n";
     std::cout << "6 - pagal galutini rezultata mazejanciai\n";
     std::cin >> pasirinkimas;
     if (std::cin.fail() || pasirinkimas < 1 || pasirinkimas > 6) {
         std::cerr << "Neteisingas pasirinkimas. Nenaudojamas rusiavimas.\n";
-        return 0; 
+        return 0;
     }
     return pasirinkimas;
 }
@@ -193,7 +172,7 @@ int isvedimo_budas() {
     std::cin >> pasirinkimas;
     if (std::cin.fail() || pasirinkimas < 1 || pasirinkimas > 2) {
         std::cerr << "Neteisingas pasirinkimas. Naudojamas isvedimas i ekrana.\n";
-        return 1; 
+        return 1;
     }
     return pasirinkimas;
 }
@@ -205,22 +184,19 @@ void spausdinimas_i_faila(const std::vector<StudentasV>& studentai, const std::s
         return;
     }
     try {
-
-    
-    out << std::left << std::setw(15) << "Vardas"
-        << std::left << std::setw(15) << "Pavarde"
-        << std::right << std::setw(20) << "Galutinis (rezultatas)" << "\n";
-    for (const auto& studentas : studentai) {
-        out << std::left << std::setw(15) << studentas.vardas
-            << std::left << std::setw(15) << studentas.pavarde
-            << std::right << std::setw(20) << std::fixed
-            << std::setprecision(2) << studentas.rez << "\n";
-    }
+        out << std::left << std::setw(15) << "Vardas"
+            << std::left << std::setw(15) << "Pavarde"
+            << std::right << std::setw(20) << "Galutinis (rezultatas)" << "\n";
+        for (const auto& studentas : studentai) {
+            out << std::left << std::setw(15) << studentas.vardas
+                << std::left << std::setw(15) << studentas.pavarde
+                << std::right << std::setw(20) << std::fixed
+                << std::setprecision(2) << studentas.rez << "\n";
+        }
     }
     catch (const std::exception& e) {
         std::cerr << "Klaida spausdinant i faila: " << e.what() << "\n";
     }
-
 }
 
 void skirstymas_i_grupes(
@@ -229,12 +205,8 @@ void skirstymas_i_grupes(
     std::vector<StudentasV>& vargsai
 ) {
     for (const auto& s : visi) {
-        if (s.rez >= 5.0) {
-            kieti.push_back(s);
-        }
-        else {
-            vargsai.push_back(s);
-        }
+        if (s.rez >= 5.0) kieti.push_back(s);
+        else               vargsai.push_back(s);
     }
 }
 
@@ -250,8 +222,8 @@ void isvedimas_i_faila(
 
     out << std::left << std::setw(20) << "Vardas"
         << std::setw(20) << "Pavarde"
-        << std::right << std::setw(20) << "Galutinis" << "\n";
-    out << std::string(60, '-') << "\n";
+        << std::right << std::setw(20) << "Galutinis" << "\n"
+        << std::string(60, '-') << "\n";
 
     for (const auto& s : studentai) {
         out << std::left << std::setw(20) << s.vardas
