@@ -50,3 +50,34 @@ static void skaityti_vector() {
     isvedimas_i_faila(vargsai, base + "_vargsiukai.txt", "Vargsiukai");
 }
 
+static void skaityti_list() {
+    std::string fn;
+    std::cout << "Failo pavadinimas: "; std::cin >> fn;
+
+    std::list<StudentasL> studentai;
+    try {
+        auto t0 = std::chrono::high_resolution_clock::now();
+        skaitymas_is_failo_l(fn, studentai);
+        double dt = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count();
+        if (studentai.empty()) throw std::runtime_error("Failas tuscias");
+        std::cout << "Skaitymas: " << dt << " s\n";
+    }
+    catch (const std::exception& e) { std::cerr << e.what() << "\n"; return; }
+
+    pasirinkimo_metodas_l(1, studentai);
+
+    auto t0 = std::chrono::high_resolution_clock::now();
+    rusiavimas_l(studentai);
+    std::cout << "Rusiavimas: " << std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count() << " s\n";
+
+    std::list<StudentasL> kieti, vargsai;
+    t0 = std::chrono::high_resolution_clock::now();
+    skirstymas_i_grupes_l(studentai, kieti, vargsai);
+    std::cout << "Skirstymas: " << std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - t0).count() << " s\n";
+    std::cout << "Kietiakai: " << kieti.size() << " | Vargsai: " << vargsai.size() << "\n";
+
+    std::string base = fn.substr(0, fn.find_last_of('.'));
+    isvedimas_i_faila_l(kieti, base + "_kietiakai.txt", "Kietiakai");
+    isvedimas_i_faila_l(vargsai, base + "_vargsiukai.txt", "Vargsiukai");
+}
+
