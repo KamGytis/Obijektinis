@@ -237,3 +237,58 @@ void isvedimas_i_faila(
         << studentai.size() << " studentu issaugota i "
         << filename << "\n";
 }
+
+// ============================================================
+// STRATEGIJA 1 - du nauji konteineriai su kopijomis (std::copy_if)
+// orginalas lieka nepakeistas
+// ============================================================
+
+double skirstymas_s1(const std::vector<StudentasV>& studentai,
+    std::vector<StudentasV>& kieti,
+    std::vector<StudentasV>& vargsai) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+    kieti.clear();
+    vargsai.clear();
+    std::copy_if(studentai.begin(), studentai.end(), std::back_inserter(kieti),
+        [](const StudentasV& s) { return s.rez >= 5.0; });
+    std::copy_if(studentai.begin(), studentai.end(), std::back_inserter(vargsai),
+        [](const StudentasV& s) { return s.rez < 5.0; });
+    return std::chrono::duration<double>(
+        std::chrono::high_resolution_clock::now() - t0).count();
+}
+
+// ============================================================
+// STRATEGIJA 2 - vienas naujas konteineris + erase/remove_if
+// po operacijos originalas lieka tik kietiakai
+// ============================================================
+
+double skirstymas_s2(std::vector<StudentasV>& studentai,
+    std::vector<StudentasV>& vargsai) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+    vargsai.clear();
+    std::copy_if(studentai.begin(), studentai.end(), std::back_inserter(vargsai),
+        [](const StudentasV& s) { return s.rez < 5.0; });
+    studentai.erase(
+        std::remove_if(studentai.begin(), studentai.end(),
+            [](const StudentasV& s) { return s.rez < 5.0; }),
+        studentai.end());
+    return std::chrono::duration<double>(
+        std::chrono::high_resolution_clock::now() - t0).count();
+}
+
+// ============================================================
+// STRATEGIJA 3 - std::partition (greiciausia vector atveju)
+// po operacijos originalas lieka tik kietiakai
+// ============================================================
+
+double skirstymas_s3(std::vector<StudentasV>& studentai,
+    std::vector<StudentasV>& vargsai) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+    vargsai.clear();
+    auto pivot = std::partition(studentai.begin(), studentai.end(),
+        [](const StudentasV& s) { return s.rez >= 5.0; });
+    vargsai.assign(pivot, studentai.end());
+    studentai.erase(pivot, studentai.end());
+    return std::chrono::duration<double>(
+        std::chrono::high_resolution_clock::now() - t0).count();
+}
